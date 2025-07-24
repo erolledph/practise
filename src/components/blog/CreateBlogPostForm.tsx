@@ -33,10 +33,9 @@ interface SelectedImage {
 
 interface CreateBlogPostFormProps {
   siteId: string
-  siteName: string
 }
 
-export function CreateBlogPostForm({ siteId, siteName }: CreateBlogPostFormProps) {
+export function CreateBlogPostForm({ siteId }: CreateBlogPostFormProps) {
   const { register, handleSubmit, watch, setValue, formState: { errors, isSubmitting } } = useForm<CreateBlogPostFormData>({
     defaultValues: {
       status: 'draft',

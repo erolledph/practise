@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import MDEditor from '@uiw/react-md-editor'
@@ -34,10 +34,9 @@ interface SelectedImage {
 interface EditBlogPostFormProps {
   siteId: string
   postId: string
-  siteName: string
 }
 
-export function EditBlogPostForm({ siteId, postId, siteName }: EditBlogPostFormProps) {
+export function EditBlogPostForm({ siteId, postId }: EditBlogPostFormProps) {
   const { register, handleSubmit, watch, setValue, reset, formState: { errors, isSubmitting } } = useForm<EditBlogPostFormData>()
   const { user } = useAuth()
   const { success, error } = useToastContext()

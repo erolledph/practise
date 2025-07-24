@@ -1,5 +1,5 @@
 import { Handler } from '@netlify/functions'
-import { adminDb, validateUserAccess } from './utils/firebaseAdmin'
+import { adminDb, initError, validateUserAccess } from './utils/firebaseAdmin'
 
 export const handler: Handler = async (event, context) => {
   // Handle CORS preflight requests
@@ -28,6 +28,36 @@ export const handler: Handler = async (event, context) => {
   }
 
   try {
+    // Check for Firebase initialization error
+    if (initError) {
+      console.error('Firebase initialization error:', initError)
+      return {
+        statusCode: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          error: 'Database connection failed',
+          details: 'Firebase Admin SDK initialization failed'
+        }),
+      }
+    }
+
+    if (!adminDb) {
+      return {
+        statusCode: 500,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          error: 'Database not available',
+          details: 'Firebase Admin DB not initialized'
+        }),
+      }
+    }
+
     const { uid, days = '30' } = event.queryStringParameters || {}
 
     if (!uid) {

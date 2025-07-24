@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { BarChart3, TrendingUp, Users, Eye, Clock, Globe, Calendar, Filter } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
@@ -6,7 +6,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Button } from '@/components/ui/button'
 import { StatsCard } from '@/components/dashboard/StatsCard'
 import { useAuth } from '@/hooks/useAuth'
-import { useToastContext } from '@/components/providers/ToastProvider'
 
 interface AnalyticsData {
   period: {
@@ -50,7 +49,6 @@ interface AnalyticsData {
 
 export function AnalyticsDashboard() {
   const { user } = useAuth()
-  const { error } = useToastContext()
   const [analyticsData, setAnalyticsData] = useState<AnalyticsData | null>(null)
   const [loading, setLoading] = useState(true)
   const [timeRange, setTimeRange] = useState('30')
