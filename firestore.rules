@@ -1,0 +1,76 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users can only access their own data
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+      
+      // User settings
+      match /settings/{document} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+      }
+      
+      // Blog posts
+      match /blogPosts/{postId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+        
+        // Validate blog post data
+        allow create: if request.auth != null && request.auth.uid == userId
+          && request.resource.data.keys().hasAll(['title', 'content', 'status', 'author', 'createdAt'])
+          && request.resource.data.status in ['draft', 'published']
+          && request.resource.data.title is string
+          && request.resource.data.content is string;
+          
+        allow update: if request.auth != null && request.auth.uid == userId
+          && request.resource.data.status in ['draft', 'published'];
+      }
+      
+      // Products
+      match /products/{productId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+        
+        // Validate product data
+        allow create: if request.auth != null && request.auth.uid == userId
+          && request.resource.data.keys().hasAll(['name', 'price', 'status', 'createdAt'])
+          && request.resource.data.status in ['draft', 'published']
+          && request.resource.data.name is string
+          && request.resource.data.price is number
+          && request.resource.data.price >= 0;
+          
+        allow update: if request.auth != null && request.auth.uid == userId
+          && request.resource.data.status in ['draft', 'published']
+          && request.resource.data.price >= 0;
+      }
+      
+      // Files
+      match /files/{fileId} {
+        allow read, write: if request.auth != null && request.auth.uid == userId;
+        
+        // Validate file data
+        allow create: if request.auth != null && request.auth.uid == userId
+          && request.resource.data.keys().hasAll(['filename', 'size', 'type', 'downloadURL', 'createdAt'])
+          && request.resource.data.size <= 10485760; // 10MB limit
+      }
+    }
+    
+    // Analytics data (write-only for tracking, read for owners)
+    match /analytics/{eventId} {
+      allow create: if true; // Allow anonymous analytics tracking
+      allow read: if false; // No direct read access
+    }
+    
+    match /analytics-daily/{date} {
+      allow create, update: if true; // Allow analytics aggregation
+      allow read: if false; // No direct read access
+    }
+    
+    // Public API access (read-only for published content)
+    match /users/{userId}/blogPosts/{postId} {
+      allow read: if resource.data.status == 'published';
+    }
+    
+    match /users/{userId}/products/{productId} {
+      allow read: if resource.data.status == 'published';
+    }
+  }
+}
