@@ -8,7 +8,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
 import { SearchInput } from '@/components/common/SearchInput'
-import { ConfirmDialog, useConfirmDialog } from '@/components/common/ConfirmDialog'
+import { useConfirmDialog } from '@/components/common/ConfirmDialog'
 import { ExportDialog } from '@/components/common/ExportDialog'
 import { useAuth } from '@/hooks/useAuth'
 import { useToastContext } from '@/components/providers/ToastProvider'

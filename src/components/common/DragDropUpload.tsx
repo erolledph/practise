@@ -1,11 +1,11 @@
-import React, { useCallback, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { Upload, File, Image, X, CheckCircle } from 'lucide-react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Progress } from '@/components/ui/progress'
 import { cn } from '@/lib/utils'
-import { validateImageFile, processImage } from '@/lib/imageUtils'
+import { validateImageFile } from '@/lib/imageUtils'
 
 interface UploadedFile {
   file: File
@@ -76,15 +76,14 @@ export function DragDropUpload({
     setUploadedFiles(prev => [...prev, ...newUploadedFiles])
 
     // Simulate upload progress
-    for (let i = 0; i < newUploadedFiles.length; i++) {
-      const uploadFile = newUploadedFiles[i]
+    for (const uploadFile of newUploadedFiles) {
       if (uploadFile.status === 'error') continue
 
       // Simulate progress
       for (let progress = 0; progress <= 100; progress += 10) {
         await new Promise(resolve => setTimeout(resolve, 100))
         setUploadedFiles(prev => 
-          prev.map((f, index) => 
+          prev.map((f) => 
             f.file === uploadFile.file 
               ? { ...f, progress }
               : f

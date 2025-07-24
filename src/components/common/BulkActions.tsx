@@ -1,7 +1,5 @@
-import React from 'react'
-import { Trash2, Eye, EyeOff, Download, Archive } from 'lucide-react'
+import { Trash2, Eye, EyeOff, Download } from 'lucide-react'
 import { Button } from '@/components/ui/button'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Badge } from '@/components/ui/badge'
 
 interface BulkAction {

@@ -1,10 +1,9 @@
-import React from 'react'
-import { DivideIcon as LucideIcon } from 'lucide-react'
+import { DivideIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 
 interface EmptyStateProps {
-  icon: LucideIcon
+  icon: typeof DivideIcon
   title: string
   description: string
   action?: {

@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Calendar, Clock, Send } from 'lucide-react'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
@@ -55,10 +54,6 @@ export function ContentScheduler({
 
   const formatDate = (date: Date) => {
     return date.toISOString().split('T')[0]
-  }
-
-  const formatTime = (date: Date) => {
-    return date.toTimeString().split(' ')[0].substring(0, 5)
   }
 
   const getScheduleStatus = () => {

@@ -119,8 +119,7 @@ export function DataTable<T>({
             {onSelectionChange && (
               <TableHead className="w-12">
                 <Checkbox
-                  checked={isAllSelected}
-                  indeterminate={isPartiallySelected}
+                  checked={isAllSelected ? true : (isPartiallySelected ? 'indeterminate' : false)}
                   onCheckedChange={toggleSelectAll}
                 />
               </TableHead>

@@ -29,5 +29,6 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "files": ["src/vite-env.d.ts"]
 }

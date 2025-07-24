@@ -1,5 +1,4 @@
-import { initializeApp, getApps, cert } from 'firebase-admin/app'
-import { getFirestore } from 'firebase-admin/firestore'
+const admin = require('firebase-admin')
 
 // Store initialization error if it occurs
 let initError: Error | null = null
@@ -9,15 +8,15 @@ let app
 let adminDb: any = null
 
 try {
-  if (getApps().length === 0) {
+  if (admin.apps.length === 0) {
     const privateKey = process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n')
     
     if (!privateKey) {
       throw new Error('FIREBASE_PRIVATE_KEY environment variable is not set')
     }
 
-    app = initializeApp({
-      credential: cert({
+    app = admin.initializeApp({
+      credential: admin.credential.cert({
         projectId: process.env.FIREBASE_PROJECT_ID,
         clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
         privateKey: privateKey,
@@ -25,19 +24,19 @@ try {
       projectId: process.env.FIREBASE_PROJECT_ID,
     })
   } else {
-    app = getApps()[0]
+    app = admin.apps[0]
   }
   
-  adminDb = getFirestore(app)
+  adminDb = admin.firestore(app)
 } catch (error) {
   console.error('Firebase Admin SDK initialization failed:', error)
   initError = error as Error
 }
 
-export { adminDb, initError }
+module.exports = { adminDb, initError, validateUserAccess, getUserBlogSite, getUserProductSite, formatTimestamp }
 
 // Helper function to validate user access
-export async function validateUserAccess(uid: string): Promise<boolean> {
+async function validateUserAccess(uid: string) {
   if (!adminDb) {
     console.error('Firebase Admin DB not initialized')
     return false
@@ -53,7 +52,7 @@ export async function validateUserAccess(uid: string): Promise<boolean> {
 }
 
 // Helper function to get user's blog site
-export async function getUserBlogSite(uid: string, blogId: string) {
+async function getUserBlogSite(uid: string, blogId: string) {
   if (!adminDb) {
     console.error('Firebase Admin DB not initialized')
     return null
@@ -73,7 +72,7 @@ export async function getUserBlogSite(uid: string, blogId: string) {
 }
 
 // Helper function to get user's product site
-export async function getUserProductSite(uid: string, siteId: string) {
+async function getUserProductSite(uid: string, siteId: string) {
   if (!adminDb) {
     console.error('Firebase Admin DB not initialized')
     return null
@@ -93,7 +92,7 @@ export async function getUserProductSite(uid: string, siteId: string) {
 }
 
 // Helper function to format Firestore timestamp
-export function formatTimestamp(timestamp: any) {
+function formatTimestamp(timestamp: any) {
   if (!timestamp) return null
   if (timestamp.toDate) {
     return timestamp.toDate().toISOString()

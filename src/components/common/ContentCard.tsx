@@ -1,4 +1,3 @@
-import React from 'react'
 import { MoreHorizontal, Edit, Trash2, Eye, Calendar } from 'lucide-react'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'

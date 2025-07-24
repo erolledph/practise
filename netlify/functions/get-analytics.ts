@@ -1,7 +1,7 @@
-import { Handler } from '@netlify/functions'
-import { adminDb, initError, validateUserAccess } from './utils/firebaseAdmin'
+const { Handler } = require('@netlify/functions')
+const { adminDb, initError, validateUserAccess } = require('./utils/firebaseAdmin')
 
-export const handler: Handler = async (event, context) => {
+exports.handler = async (event, context) => {
   // Handle CORS preflight requests
   if (event.httpMethod === 'OPTIONS') {
     return {

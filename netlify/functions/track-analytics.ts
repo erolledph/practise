@@ -1,6 +1,6 @@
-import { Handler } from '@netlify/functions'
-import { adminDb } from './utils/firebaseAdmin'
-import { createHash } from 'crypto'
+const { Handler } = require('@netlify/functions')
+const { adminDb } = require('./utils/firebaseAdmin')
+const { createHash } = require('crypto')
 
 interface AnalyticsEvent {
   type: 'view' | 'interaction' | 'click'
@@ -56,7 +56,7 @@ function validateEvent(data: any): data is AnalyticsEvent {
   )
 }
 
-export const handler: Handler = async (event, context) => {
+exports.handler = async (event, context) => {
   // Handle CORS preflight requests
   if (event.httpMethod === 'OPTIONS') {
     return {
